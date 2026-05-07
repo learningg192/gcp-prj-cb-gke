@@ -1,12 +1,9 @@
-FROM python:3.10
+FROM python:3.10          # base image
 
-WORKDIR /app
+WORKDIR /app              # working directory inside container
 
-# copy backend
-COPY backend/ /app/backend/
-
-# copy frontend
-COPY frontend/ /app/frontend/
+COPY backend/ /app/backend/     # copy backend code
+COPY frontend/ /app/frontend/   # copy frontend files
 
 RUN pip install --no-cache-dir -r /app/backend/requirements.txt
 
