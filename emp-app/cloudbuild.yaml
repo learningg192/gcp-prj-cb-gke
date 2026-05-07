@@ -7,9 +7,11 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'build'
+    - '-f'
+    - 'emp-app/Dockerfile'   # 👈 ADD THIS
     - '-t'
     - 'us-central1-docker.pkg.dev/ams-kap/cloudbuild-gke/emp-app:$SHORT_SHA'
-    - './emp-app'   # ✅ FIXED HERE
+    - './emp-app'
 
 # 2. Push image
 - name: 'gcr.io/cloud-builders/docker'
