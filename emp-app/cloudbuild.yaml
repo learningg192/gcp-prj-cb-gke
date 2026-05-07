@@ -1,0 +1,28 @@
+steps:
+# 1. Build image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', 'us-central1-docker.pkg.dev/ams-kap/emp-app-repo/emp-app:$SHORT_SHA',
+    '.'
+  ]
+
+# 2. Push image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'push',
+    'us-central1-docker.pkg.dev/ams-kap/emp-app-repo/emp-app:$SHORT_SHA'
+  ]
+
+# 3. Set image in deployment (rolling update)
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+    - set
+    - image
+    - deployment/emp-app
+    - emp-app=us-central1-docker.pkg.dev/ams-kap/emp-app-repo/emp-app:$SHORT_SHA
+  env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=emp-cluster'
+images:
+- 'us-central1-docker.pkg.dev/ams-kap/emp-app-repo/emp-app:$SHORT_SHA'
